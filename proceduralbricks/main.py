@@ -28,6 +28,8 @@ class Parts(Enum):
   WINDOW_1X2X2 = '60592C01'
   WINDOW_1X2X3 = '60593C01'
   DOOR_1X4X6_FRAME = '30179'
+  DOOR_1X4X6_3_PANE = '30178C01'
+  DOOR_1X4X6_4_PANE = '60623'
 
 class Colors(Enum):
   BLACK = 0
@@ -134,18 +136,21 @@ def wall_box(a, b, front = True):
 
   return els
 
-def main():
-  #els = wall_box((0,0,400), (16*20,7 * 24,200 + 16 * 20))
+def modular_building():
   els = []
-
+  
   for y in range (0,8*8 * 24,8*24):
     els += wall_box((0,y,0), (31 * 40, y + 24 * 8, 20 * 16), front=False)
 
     els += wall((0,y,0), (31 * 40,y + 24 * 2, 0), left=FillType.EVEN, right=FillType.EVEN)
     els += window_wall((0,y + 24 * 2,0), 31, left=FillType.EVEN, right=FillType.EVEN)
 
+  return els
+    
+
+def main():
   with open('test.ldr', 'w') as out:
-    out.write(as_ldr(els))
+    out.write(as_ldr(modular_building()))
 
 if __name__ == '__main__':
   main()
