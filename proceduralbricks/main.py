@@ -27,6 +27,7 @@ class Parts(Enum):
   BRICK_1X2_MASONRY = '98283'
   WINDOW_1X2X2 = '60592C01'
   WINDOW_1X2X3 = '60593C01'
+  GLASS_1X4X6 = '57895'
   DOOR_1X4X6_FRAME = '30179'
   DOOR_1X4X6_3_PANE = '30178C01'
   DOOR_1X4X6_4_PANE = '60623'
@@ -35,6 +36,7 @@ class Colors(Enum):
   BLACK = 0
   TAN = 19
   SAND_BLUE = 379
+  TRANS_CLEAR = 47
 
 def window_wall(start, width, facing=Facing.FRONT, left=FillType.SOLID, right=FillType.SOLID):
   """ 
@@ -53,6 +55,10 @@ def window_wall(start, width, facing=Facing.FRONT, left=FillType.SOLID, right=Fi
       if random() > .5:
         # Door
         els.append((relative_pos((start[0] + x + 20, start[1], start[2]), facing),Parts.DOOR_1X4X6_FRAME.value, Colors.TAN.value, facing))
+        if random() > .5:
+          els.append((relative_pos((start[0] + x - 12, start[1], start[2]), facing),Parts.DOOR_1X4X6_4_PANE.value, Colors.BLACK.value, facing))
+        else:
+          els.append((relative_pos((start[0] + x + 20, start[1] + 4, start[2]), facing),Parts.GLASS_1X4X6.value, Colors.TRANS_CLEAR.value, facing))
       else:
         els += wall((start[0] + x, start[1] + 4 * 24, start[2]), (start[0] + x + 80, start[1] + 6 * 24, start[2]))
         els.append((relative_pos((start[0] + x, start[1], start[2]), facing),Parts.WINDOW_1X2X2.value, Colors.TAN.value, facing))
