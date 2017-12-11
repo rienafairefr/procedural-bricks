@@ -39,10 +39,10 @@ def window_wall(start, width, facing=Facing.FRONT, left=FillType.SOLID, right=Fi
       x += 80
     else:
       last_solid = True
-      els += wall((start[0] + x, start[1], start[2]), (start[0] + x + 40, start[1] + 6 * 24, start[2]))
+      els.append(Wall((start[0] + x, start[1], start[2]), (start[0] + x + 40, start[1] + 6 * 24, start[2]),connections=Connections(left=FillType.SOLID, right=FillType.SOLID)))
       x += 40
 
-  els += wall((start[0] + x, start[1], start[2]), (start[0] + x + 40, start[1] + 6 * 24, start[2]), right=right)
+  els.append(Wall((start[0] + x, start[1], start[2]), (start[0] + x + 40, start[1] + 6 * 24, start[2]), connections=Connections(left=FillType.SOLID, right=right)))
 
   return els
 
@@ -83,36 +83,6 @@ class Wall(ElementGroup):
         
         self.children.append(Element(position, facing, part=part, color=Colors.SAND_BLUE.value))
         
-
-def wall(a, b, facing = Facing.FRONT, left=FillType.SOLID, right=FillType.SOLID):
-  """ Returns a wall fill between a and b """
-  els = []
-  
-  for x in range(a[facing.x],b[facing.x],20*2):
-    for y in range(a[facing.y],b[facing.y],24):
-      offset = 0
-      part = Parts.BRICK_1X2.value
-
-      if left != FillType.SOLID and (y / 24) % 2 == left.value:
-        offset = 20
-
-      if offset > 0:
-        if x == b[facing.x] - 40:
-          if right != FillType.SOLID:
-            continue
-          else:
-            offset = 10
-            part = Parts.BRICK_1X1.value
-
-      if right != FillType.SOLID and (y / 24) % 2 == right.value and abs(b[facing.x] - a[facing.x]) == 40:
-        offset = -10
-        part = Parts.BRICK_1X1.value 
-
-      position = relative_pos((x + offset,y,a[facing.z]), facing)
-      
-      els.append((position, part, Colors.SAND_BLUE.value, facing))
-
-  return els
 
 def el_to_line(el):
   if type(el) == tuple:
