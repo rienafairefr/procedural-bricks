@@ -77,8 +77,10 @@ class Wall(ElementGroup):
             else:
               offset = 10
               part = Parts.BRICK_1X1.value
+
+        last_one = (abs(pos_b[0] - pos[0]) == 40)
   
-        if connections.right and (y / 24) % 2 == int(connections.right != BRICK_EVEN) and abs(pos_b[0] - pos[0]) == 40:
+        if last_one and connections.right and (y / 24) % 2 == int(connections.right != BRICK_EVEN):
           offset = -10
           part = Parts.BRICK_1X1.value 
 
