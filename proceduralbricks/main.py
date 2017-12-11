@@ -14,7 +14,9 @@ def window_wall(start, width, facing=Facing.FRONT, left=FillType.SOLID, right=Fi
   Height is always 6 bricks 
   """
 
-  els = wall((start[0], start[1], start[2]), (start[0] + 40, start[1] + 6 * 24, start[2]), left=left)
+  els = []
+
+  els.append(Wall((start[0], start[1], start[2]), (start[0] + 40, start[1] + 6 * 24, start[2]), connections=Connections(left=left,right=FillType.SOLID)))
 
   last_solid = True
   x = 40
@@ -29,7 +31,7 @@ def window_wall(start, width, facing=Facing.FRONT, left=FillType.SOLID, right=Fi
         else:
           els.append((relative_pos((start[0] + x + 20, start[1] + 4, start[2]), facing),Parts.GLASS_1X4X6.value, Colors.TRANS_CLEAR.value, facing))
       else:
-        els += wall((start[0] + x, start[1] + 4 * 24, start[2]), (start[0] + x + 80, start[1] + 6 * 24, start[2]))
+        els.append(Wall((start[0] + x, start[1] + 4 * 24, start[2]), (start[0] + x + 80, start[1] + 6 * 24, start[2]), connections=Connections(left=FillType.SOLID, right=FillType.SOLID)))
         els.append((relative_pos((start[0] + x, start[1], start[2]), facing),Parts.WINDOW_1X2X2.value, Colors.TAN.value, facing))
         els.append((relative_pos((start[0] + x + 40, start[1], start[2]), facing),Parts.WINDOW_1X2X2.value, Colors.TAN.value, facing))
         els.append((relative_pos((start[0] + x, start[1] + 48, start[2]), facing),Parts.WINDOW_1X2X2.value, Colors.TAN.value, facing))
@@ -136,10 +138,10 @@ def wall_box(a, b, front = True):
   els = []
 
   if front:
-    els += wall(a,(b[0],b[1],a[2]), facing=Facing.FRONT, left=FillType.EVEN, right=FillType.EVEN)
-  els += wall(a,(a[0],b[1],b[2]), facing=Facing.LEFT, left=FillType.ODD, right=FillType.ODD)
-  els += wall((a[0],a[1],b[2] - 20),(b[0],b[1],b[2] - 20), facing=Facing.BACK, left=FillType.EVEN, right=FillType.EVEN)
-  els += wall((b[0] - 20,a[1],a[2]),(b[0] - 20,b[1],b[2]), facing=Facing.RIGHT, left=FillType.ODD, right=FillType.ODD)
+    els.append(Wall(a,(b[0],b[1],a[2]), facing=Facing.FRONT, connections=Connections(left=FillType.EVEN, right=FillType.EVEN)))
+  els.append(Wall(a,(a[0],b[1],b[2]), facing=Facing.LEFT, connections=Connections(left=FillType.ODD, right=FillType.ODD)))
+  els.append(Wall((a[0],a[1],b[2] - 20),(b[0],b[1],b[2] - 20), facing=Facing.BACK, connections=Connections(left=FillType.EVEN, right=FillType.EVEN)))
+  els.append(Wall((b[0] - 20,a[1],a[2]),(b[0] - 20,b[1],b[2]), facing=Facing.RIGHT, connections=Connections(left=FillType.ODD, right=FillType.ODD)))
 
   return els
 
