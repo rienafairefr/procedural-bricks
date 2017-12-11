@@ -1,9 +1,8 @@
 from enum import Enum
 
-class FillType(Enum):
-  EVEN = 0
-  ODD = 1
-  SOLID = 2
+# Connections
+BRICK_EVEN = 1
+BRICK_ODD = 2
 
 class Facing(Enum):
   FRONT = (0, 1, 2, 1)
