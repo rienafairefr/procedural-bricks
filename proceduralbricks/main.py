@@ -5,7 +5,7 @@ The structure is broken down recursively into interconnected subgroups.
 from random import random
 
 from constants import *
-from element import Element
+from element import Element, ElementGroup, Connections
 
 def window_wall(start, width, facing=Facing.FRONT, left=FillType.SOLID, right=FillType.SOLID):
   """ 
@@ -52,6 +52,35 @@ def relative_pos(pos, facing):
   ret[facing.z] = 10 + pos[2]
 
   return ret
+
+class Wall(ElementGroup):
+  def __init__(self, pos, pos_b, facing = Facing.FRONT, connections=Connections(left=FillType.EVEN, right=FillType.EVEN)):
+    ElementGroup.__init__(self, pos, facing, pos_b=pos_b, connections=connections)
+
+    for x in range(pos[self.facing.x],pos_b[self.facing.x],20*2):
+      for y in range(pos[self.facing.y],pos_b[self.facing.y],24):
+        offset = 0
+        part = Parts.BRICK_1X2.value
+  
+        if connections.left != FillType.SOLID and (y / 24) % 2 == connections.left.value:
+          offset = 20
+  
+        if offset > 0:
+          if x == pos_b[facing.x] - 40:
+            if connections.right != FillType.SOLID:
+              continue
+            else:
+              offset = 10
+              part = Parts.BRICK_1X1.value
+  
+        if connections.right != FillType.SOLID and (y / 24) % 2 == connections.right.value and abs(pos_b[facing.x] - pos[facing.x]) == 40:
+          offset = -10
+          part = Parts.BRICK_1X1.value 
+  
+        position = relative_pos((x + offset,y,pos[facing.z]), facing)
+        
+        self.children.append(Element(position, facing, part=part, color=Colors.SAND_BLUE.value))
+        
 
 def wall(a, b, facing = Facing.FRONT, left=FillType.SOLID, right=FillType.SOLID):
   """ Returns a wall fill between a and b """
@@ -120,7 +149,7 @@ def modular_building():
   for y in range (0,8*8 * 24,8*24):
     els += wall_box((0,y,0), (31 * 40, y + 24 * 8, 20 * 16), front=False)
 
-    els += wall((0,y,0), (31 * 40,y + 24 * 2, 0), left=FillType.EVEN, right=FillType.EVEN)
+    els += [Wall((0,y,0), (31 * 40,y + 24 * 2, 0), connections=Connections(left=FillType.EVEN, right=FillType.EVEN))]
     els += window_wall((0,y + 24 * 2,0), 31, left=FillType.EVEN, right=FillType.EVEN)
 
   return els
