@@ -68,26 +68,6 @@ class Wall(ElementGroup):
 
         self.append(Element((x + offset,y,10 + pos[2]), facing, part=part, color=SAND_BLUE))
 
-def el_to_line(el):
-  if type(el) == tuple:
-    if el[3] == Facing.LEFT:
-      orientation = "0 0 1 0 1 0 -1 0 0"
-    if el[3] == Facing.BACK:
-      orientation = "-1 0 0 0 1 0 0 0 -1"
-    if el[3] == Facing.FRONT:
-      orientation = "1 0 0 0 1 0 0 0 1"
-    if el[3] == Facing.RIGHT:
-      orientation = "-0 0 -1 0 1 0 1 0 0"
-  
-    return "1 %d %d %d %d %s %s.dat" % (el[2], el[0][0], el[0][1], el[0][2], orientation, el[1])
-  else:
-    return el.to_ldr()
-
-def as_ldr(els):
-  lines = [el_to_line(e) for e in els]
-
-  return '\n'.join(lines)
-
 class WallBox(ElementGroup):
   def __init__(self, a, b, front=True, facing = Facing.FRONT, connections=Connections()):
     ElementGroup.__init__(self, a, facing, pos_b=b, connections=connections)
