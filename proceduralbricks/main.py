@@ -98,21 +98,21 @@ class WallBox(ElementGroup):
     self.append(Wall((a[0],a[1],b[2] - 20),(b[0],b[1],b[2] - 20), facing=Facing.BACK, connections=Connections(left=BRICK_EVEN, right=BRICK_EVEN)))
     self.append(Wall((b[0] - 20,a[1],a[2]),(b[0] - 20,b[1],b[2]), facing=Facing.RIGHT, connections=Connections(left=BRICK_ODD, right=BRICK_ODD)))
 
-def modular_building():
-  els = []
+class ModularBuilding(ElementGroup):
+  def __init__(self):
+    ElementGroup.__init__(self, (0,0,0), Facing.FRONT)
+
+    for y in range (0,8*8 * 24,8*24):
+      self.append(WallBox((0,y,0), (31 * 40, y + 24 * 8, 20 * 16), front=False))
   
-  for y in range (0,8*8 * 24,8*24):
-    els += [WallBox((0,y,0), (31 * 40, y + 24 * 8, 20 * 16), front=False)]
-
-    els += [Wall((0,y,0), (31 * 40,y + 24 * 2, 0), connections=Connections(left=BRICK_EVEN, right=BRICK_EVEN))]
-    els += [WindowWall((0,y + 24 * 2,0), 31, connections=Connections(left=BRICK_EVEN, right=BRICK_EVEN))]
-
-  return els
-    
+      self.append(Wall((0,y,0), (31 * 40,y + 24 * 2, 0), connections=Connections(left=BRICK_EVEN, right=BRICK_EVEN)))
+      self.append(WindowWall((0,y + 24 * 2,0), 31, connections=Connections(left=BRICK_EVEN, right=BRICK_EVEN)))
 
 def main():
+  building = ModularBuilding()
+
   with open('test.ldr', 'w') as out:
-    out.write(as_ldr(modular_building()))
+    out.write(building.to_ldr())
 
 if __name__ == '__main__':
   main()
