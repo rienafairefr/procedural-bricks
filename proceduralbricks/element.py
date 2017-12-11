@@ -37,5 +37,19 @@ class ElementGroup:
     self.connections = connections
     self.children = []
 
+  def relative_pos(self, v):
+    ret = [0,0,0]
+  
+    ret[self.facing.x] = 20 + v[0]
+    ret[self.facing.y] = v[1]
+    ret[self.facing.z] = 10 + v[2]
+  
+    return ret
+
+  def append(self, child):
+    child.pos = self.relative_pos(child.pos)
+      
+    self.children.append(child)
+
   def to_ldr(self):
     return('\n'.join([c.to_ldr() for c in self.children]))

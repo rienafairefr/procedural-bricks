@@ -78,11 +78,8 @@ class Wall(ElementGroup):
         if connections.right != FillType.SOLID and (y / 24) % 2 == connections.right.value and abs(pos_b[facing.x] - pos[facing.x]) == 40:
           offset = -10
           part = Parts.BRICK_1X1.value 
-  
-        position = relative_pos((x + offset,y,pos[facing.z]), facing)
-        
-        self.children.append(Element(position, facing, part=part, color=Colors.SAND_BLUE.value))
-        
+
+        self.append(Element((x + offset,y,pos[facing.z]), facing, part=part, color=Colors.SAND_BLUE.value))
 
 def el_to_line(el):
   if type(el) == tuple:
