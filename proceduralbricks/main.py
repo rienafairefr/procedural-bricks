@@ -104,22 +104,21 @@ def as_ldr(els):
 
   return '\n'.join(lines)
 
-def wall_box(a, b, front = True):
-  els = []
+class WallBox(ElementGroup):
+  def __init__(self, a, b, front=True, facing = Facing.FRONT, connections=Connections()):
+    ElementGroup.__init__(self, a, facing, pos_b=b, connections=connections)
 
-  if front:
-    els.append(Wall(a,(b[0],b[1],a[2]), facing=Facing.FRONT, connections=Connections(left=BRICK_EVEN, right=BRICK_EVEN)))
-  els.append(Wall(a,(a[0],b[1],b[2]), facing=Facing.LEFT, connections=Connections(left=BRICK_ODD, right=BRICK_ODD)))
-  els.append(Wall((a[0],a[1],b[2] - 20),(b[0],b[1],b[2] - 20), facing=Facing.BACK, connections=Connections(left=BRICK_EVEN, right=BRICK_EVEN)))
-  els.append(Wall((b[0] - 20,a[1],a[2]),(b[0] - 20,b[1],b[2]), facing=Facing.RIGHT, connections=Connections(left=BRICK_ODD, right=BRICK_ODD)))
-
-  return els
+    if front:
+      self.append(Wall(a,(b[0],b[1],a[2]), facing=Facing.FRONT, connections=Connections(left=BRICK_EVEN, right=BRICK_EVEN)))
+    self.append(Wall(a,(a[0],b[1],b[2]), facing=Facing.LEFT, connections=Connections(left=BRICK_ODD, right=BRICK_ODD)))
+    self.append(Wall((a[0],a[1],b[2] - 20),(b[0],b[1],b[2] - 20), facing=Facing.BACK, connections=Connections(left=BRICK_EVEN, right=BRICK_EVEN)))
+    self.append(Wall((b[0] - 20,a[1],a[2]),(b[0] - 20,b[1],b[2]), facing=Facing.RIGHT, connections=Connections(left=BRICK_ODD, right=BRICK_ODD)))
 
 def modular_building():
   els = []
   
   for y in range (0,8*8 * 24,8*24):
-    els += wall_box((0,y,0), (31 * 40, y + 24 * 8, 20 * 16), front=False)
+    els += [WallBox((0,y,0), (31 * 40, y + 24 * 8, 20 * 16), front=False)]
 
     els += [Wall((0,y,0), (31 * 40,y + 24 * 2, 0), connections=Connections(left=BRICK_EVEN, right=BRICK_EVEN))]
     els += window_wall((0,y + 24 * 2,0), 31, left=BRICK_EVEN, right=BRICK_EVEN)
