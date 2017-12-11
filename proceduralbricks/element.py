@@ -40,9 +40,9 @@ class ElementGroup:
   def relative_pos(self, v):
     ret = [0,0,0]
   
-    ret[self.facing.x] = 20 + v[0]
+    ret[self.facing.x] = v[0]
     ret[self.facing.y] = v[1]
-    ret[self.facing.z] = 10 + v[2]
+    ret[self.facing.z] = v[2]
   
     return ret
 

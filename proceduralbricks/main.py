@@ -59,8 +59,11 @@ class Wall(ElementGroup):
   def __init__(self, pos, pos_b, facing = Facing.FRONT, connections=Connections(left=FillType.EVEN, right=FillType.EVEN)):
     ElementGroup.__init__(self, pos, facing, pos_b=pos_b, connections=connections)
 
-    for x in range(pos[self.facing.x],pos_b[self.facing.x],20*2):
-      for y in range(pos[self.facing.y],pos_b[self.facing.y],24):
+    pos = self.relative_pos(pos)
+    pos_b = self.relative_pos(pos_b)
+
+    for x in range(pos[0],pos_b[0],20*2):
+      for y in range(pos[1],pos_b[1],24):
         offset = 0
         part = Parts.BRICK_1X2.value
   
@@ -68,18 +71,18 @@ class Wall(ElementGroup):
           offset = 20
   
         if offset > 0:
-          if x == pos_b[facing.x] - 40:
+          if x == pos_b[0] - 40:
             if connections.right != FillType.SOLID:
               continue
             else:
               offset = 10
               part = Parts.BRICK_1X1.value
   
-        if connections.right != FillType.SOLID and (y / 24) % 2 == connections.right.value and abs(pos_b[facing.x] - pos[facing.x]) == 40:
+        if connections.right != FillType.SOLID and (y / 24) % 2 == connections.right.value and abs(pos_b[0] - pos[0]) == 40:
           offset = -10
           part = Parts.BRICK_1X1.value 
 
-        self.append(Element((x + offset,y,pos[facing.z]), facing, part=part, color=Colors.SAND_BLUE.value))
+        self.append(Element((20 + x + offset,y,10 + pos[2]), facing, part=part, color=Colors.SAND_BLUE.value))
 
 def el_to_line(el):
   if type(el) == tuple:
