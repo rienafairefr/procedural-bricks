@@ -64,27 +64,25 @@ class Wall(ElementGroup):
 
     for x in range(pos[0],pos_b[0],20*2):
       for y in range(pos[1],pos_b[1],24):
-        offset = 0
+        offset = 20
         part = Parts.BRICK_1X2.value
 
         if connections.left and (y / 24) % 2 == int(connections.left != BRICK_EVEN):
-          offset = 20
-  
-        if offset > 0:
+          offset = 40
           if x == pos_b[0] - 40:
             if connections.right:
               continue
             else:
-              offset = 10
+              offset = 30
               part = Parts.BRICK_1X1.value
 
         last_one = (abs(pos_b[0] - pos[0]) == 40)
   
         if last_one and connections.right and (y / 24) % 2 == int(connections.right != BRICK_EVEN):
-          offset = -10
+          offset = 10
           part = Parts.BRICK_1X1.value 
 
-        self.append(Element((20 + x + offset,y,10 + pos[2]), facing, part=part, color=Colors.SAND_BLUE.value))
+        self.append(Element((x + offset,y,10 + pos[2]), facing, part=part, color=Colors.SAND_BLUE.value))
 
 def el_to_line(el):
   if type(el) == tuple:
