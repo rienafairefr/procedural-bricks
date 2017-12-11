@@ -7,44 +7,37 @@ from random import random
 from constants import *
 from element import Element, ElementGroup, Connections
 
-def window_wall(start, width, facing=Facing.FRONT, left=None, right=None):
-  """ 
-  A wall with windows
+class WindowWall(ElementGroup):
+  def __init__(self, start, width, facing = Facing.FRONT, connections=Connections()):
+    ElementGroup.__init__(self, start, facing, connections=connections)
 
-  Height is always 6 bricks 
-  """
-
-  els = []
-
-  els.append(Wall((start[0], start[1], start[2]), (start[0] + 40, start[1] + 6 * 24, start[2]), connections=Connections(left=left)))
-
-  last_solid = True
-  x = 40
-  while x < start[facing.x] + width * 40 - 40:
-    if last_solid:
-      last_solid = False
-      if random() > .5:
-        # Door
-        els.append(Element(relative_pos((start[0] + x + 20, start[1], start[2]), facing), facing, part=DOOR_1X4X6_FRAME, color = TAN))
+    self.append(Wall((start[0], start[1], start[2]), (start[0] + 40, start[1] + 6 * 24, start[2]), connections=Connections(left=connections.left)))
+  
+    last_solid = True
+    x = 40
+    while x < start[facing.x] + width * 40 - 40:
+      if last_solid:
+        last_solid = False
         if random() > .5:
-          els.append((relative_pos((start[0] + x - 12, start[1], start[2]), facing),DOOR_1X4X6_4_PANE, BLACK, facing))
+          # Door
+          self.append(Element((start[0] + x + 40, start[1], start[2] + 10), facing, part=DOOR_1X4X6_FRAME, color = TAN))
+          if random() > .5:
+            self.append(Element((start[0] + x + 20 - 12, start[1], start[2] + 10), facing, part=DOOR_1X4X6_4_PANE, color=BLACK))
+          else:
+            self.append(Element((start[0] + x + 40, start[1] + 4, start[2] + 10), facing,part=GLASS_1X4X6, color=TRANS_CLEAR))
         else:
-          els.append((relative_pos((start[0] + x + 20, start[1] + 4, start[2]), facing),GLASS_1X4X6, TRANS_CLEAR, facing))
+          self.append(Wall((start[0] + x, start[1] + 4 * 24, start[2]), (start[0] + x + 80, start[1] + 6 * 24, start[2])))
+          self.append(Element((start[0] + x + 20, start[1], start[2] + 10), facing,part=WINDOW_1X2X2, color=TAN))
+          self.append(Element((start[0] + x + 20 + 40, start[1], start[2] + 10), facing,part=WINDOW_1X2X2, color=TAN))
+          self.append(Element((start[0] + x + 20, start[1] + 48, start[2] + 10), facing,part=WINDOW_1X2X2, color=TAN))
+          self.append(Element((start[0] + x + 20 + 40, start[1] + 48, start[2] + 10), facing,part=WINDOW_1X2X2, color=TAN))
+        x += 80
       else:
-        els.append(Wall((start[0] + x, start[1] + 4 * 24, start[2]), (start[0] + x + 80, start[1] + 6 * 24, start[2])))
-        els.append((relative_pos((start[0] + x, start[1], start[2]), facing),WINDOW_1X2X2, TAN, facing))
-        els.append((relative_pos((start[0] + x + 40, start[1], start[2]), facing),WINDOW_1X2X2, TAN, facing))
-        els.append((relative_pos((start[0] + x, start[1] + 48, start[2]), facing),WINDOW_1X2X2, TAN, facing))
-        els.append((relative_pos((start[0] + x + 40, start[1] + 48, start[2]), facing),WINDOW_1X2X2, TAN, facing))
-      x += 80
-    else:
-      last_solid = True
-      els.append(Wall((start[0] + x, start[1], start[2]), (start[0] + x + 40, start[1] + 6 * 24, start[2])))
-      x += 40
-
-  els.append(Wall((start[0] + x, start[1], start[2]), (start[0] + x + 40, start[1] + 6 * 24, start[2]), connections=Connections(right=right)))
-
-  return els
+        last_solid = True
+        self.append(Wall((start[0] + x, start[1], start[2]), (start[0] + x + 40, start[1] + 6 * 24, start[2])))
+        x += 40
+  
+    self.append(Wall((start[0] + x, start[1], start[2]), (start[0] + x + 40, start[1] + 6 * 24, start[2]), connections=Connections(right=connections.right)))
 
 def relative_pos(pos, facing):
   ret = [0,0,0]
@@ -121,7 +114,7 @@ def modular_building():
     els += [WallBox((0,y,0), (31 * 40, y + 24 * 8, 20 * 16), front=False)]
 
     els += [Wall((0,y,0), (31 * 40,y + 24 * 2, 0), connections=Connections(left=BRICK_EVEN, right=BRICK_EVEN))]
-    els += window_wall((0,y + 24 * 2,0), 31, left=BRICK_EVEN, right=BRICK_EVEN)
+    els += [WindowWall((0,y + 24 * 2,0), 31, connections=Connections(left=BRICK_EVEN, right=BRICK_EVEN))]
 
   return els
     
