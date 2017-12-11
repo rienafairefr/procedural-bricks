@@ -25,17 +25,17 @@ def window_wall(start, width, facing=Facing.FRONT, left=None, right=None):
       last_solid = False
       if random() > .5:
         # Door
-        els.append(Element(relative_pos((start[0] + x + 20, start[1], start[2]), facing), facing, part=Parts.DOOR_1X4X6_FRAME.value, color = TAN))
+        els.append(Element(relative_pos((start[0] + x + 20, start[1], start[2]), facing), facing, part=DOOR_1X4X6_FRAME, color = TAN))
         if random() > .5:
-          els.append((relative_pos((start[0] + x - 12, start[1], start[2]), facing),Parts.DOOR_1X4X6_4_PANE.value, BLACK, facing))
+          els.append((relative_pos((start[0] + x - 12, start[1], start[2]), facing),DOOR_1X4X6_4_PANE, BLACK, facing))
         else:
-          els.append((relative_pos((start[0] + x + 20, start[1] + 4, start[2]), facing),Parts.GLASS_1X4X6.value, TRANS_CLEAR, facing))
+          els.append((relative_pos((start[0] + x + 20, start[1] + 4, start[2]), facing),GLASS_1X4X6, TRANS_CLEAR, facing))
       else:
         els.append(Wall((start[0] + x, start[1] + 4 * 24, start[2]), (start[0] + x + 80, start[1] + 6 * 24, start[2])))
-        els.append((relative_pos((start[0] + x, start[1], start[2]), facing),Parts.WINDOW_1X2X2.value, TAN, facing))
-        els.append((relative_pos((start[0] + x + 40, start[1], start[2]), facing),Parts.WINDOW_1X2X2.value, TAN, facing))
-        els.append((relative_pos((start[0] + x, start[1] + 48, start[2]), facing),Parts.WINDOW_1X2X2.value, TAN, facing))
-        els.append((relative_pos((start[0] + x + 40, start[1] + 48, start[2]), facing),Parts.WINDOW_1X2X2.value, TAN, facing))
+        els.append((relative_pos((start[0] + x, start[1], start[2]), facing),WINDOW_1X2X2, TAN, facing))
+        els.append((relative_pos((start[0] + x + 40, start[1], start[2]), facing),WINDOW_1X2X2, TAN, facing))
+        els.append((relative_pos((start[0] + x, start[1] + 48, start[2]), facing),WINDOW_1X2X2, TAN, facing))
+        els.append((relative_pos((start[0] + x + 40, start[1] + 48, start[2]), facing),WINDOW_1X2X2, TAN, facing))
       x += 80
     else:
       last_solid = True
@@ -65,7 +65,7 @@ class Wall(ElementGroup):
     for x in range(pos[0],pos_b[0],20*2):
       for y in range(pos[1],pos_b[1],24):
         offset = 20
-        part = Parts.BRICK_1X2.value
+        part = BRICK_1X2
 
         if connections.left and (y / 24) % 2 == int(connections.left != BRICK_EVEN):
           offset = 40
@@ -74,13 +74,13 @@ class Wall(ElementGroup):
               continue
             else:
               offset = 30
-              part = Parts.BRICK_1X1.value
+              part = BRICK_1X1
 
         last_one = (abs(pos_b[0] - pos[0]) == 40)
   
         if last_one and connections.right and (y / 24) % 2 == int(connections.right != BRICK_EVEN):
           offset = 10
-          part = Parts.BRICK_1X1.value 
+          part = BRICK_1X1 
 
         self.append(Element((x + offset,y,10 + pos[2]), facing, part=part, color=SAND_BLUE))
 
