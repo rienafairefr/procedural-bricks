@@ -5,6 +5,7 @@ The structure is broken down recursively into interconnected subgroups.
 from random import random
 
 from constants import *
+from element import Element
 
 def window_wall(start, width, facing=Facing.FRONT, left=FillType.SOLID, right=FillType.SOLID):
   """ 
@@ -22,7 +23,7 @@ def window_wall(start, width, facing=Facing.FRONT, left=FillType.SOLID, right=Fi
       last_solid = False
       if random() > .5:
         # Door
-        els.append((relative_pos((start[0] + x + 20, start[1], start[2]), facing),Parts.DOOR_1X4X6_FRAME.value, Colors.TAN.value, facing))
+        els.append(Element(relative_pos((start[0] + x + 20, start[1], start[2]), facing), facing, part=Parts.DOOR_1X4X6_FRAME.value, color = Colors.TAN.value))
         if random() > .5:
           els.append((relative_pos((start[0] + x - 12, start[1], start[2]), facing),Parts.DOOR_1X4X6_4_PANE.value, Colors.BLACK.value, facing))
         else:
@@ -83,16 +84,19 @@ def wall(a, b, facing = Facing.FRONT, left=FillType.SOLID, right=FillType.SOLID)
   return els
 
 def el_to_line(el):
-  if el[3] == Facing.LEFT:
-    orientation = "0.000026 0 1 0 1 0 -1 0 0.000026"
-  if el[3] == Facing.BACK:
-    orientation = "-1 0 0.000053 0 1 0 -0.000053 0 -1"
-  if el[3] == Facing.FRONT:
-    orientation = "1 0 0 0 1 0 0 0 1"
-  if el[3] == Facing.RIGHT:
-    orientation = "-0.000079 0 -1 0 1 0 1 0 -0.000079"
-
-  return "1 %d %d %d %d %s %s.dat" % (el[2], el[0][0], el[0][1] - 8*8 * 24, el[0][2], orientation, el[1])
+  if type(el) == tuple:
+    if el[3] == Facing.LEFT:
+      orientation = "0 0 1 0 1 0 -1 0 0"
+    if el[3] == Facing.BACK:
+      orientation = "-1 0 0 0 1 0 0 0 -1"
+    if el[3] == Facing.FRONT:
+      orientation = "1 0 0 0 1 0 0 0 1"
+    if el[3] == Facing.RIGHT:
+      orientation = "-0 0 -1 0 1 0 1 0 0"
+  
+    return "1 %d %d %d %d %s %s.dat" % (el[2], el[0][0], el[0][1], el[0][2], orientation, el[1])
+  else:
+    return el.to_ldr()
 
 def as_ldr(els):
   lines = [el_to_line(e) for e in els]
