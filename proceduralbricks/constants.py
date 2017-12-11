@@ -26,9 +26,10 @@ class Parts(Enum):
   DOOR_1X4X6_3_PANE = '30178C01'
   DOOR_1X4X6_4_PANE = '60623'
 
-class Colors(Enum):
-  BLACK = 0
-  TAN = 19
-  SAND_BLUE = 379
-  TRANS_CLEAR = 47
+# Colors
+
+BLACK = 0
+TAN = 19
+SAND_BLUE = 379
+TRANS_CLEAR = 47
 
