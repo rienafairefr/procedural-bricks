@@ -39,15 +39,6 @@ class WindowWall(ElementGroup):
   
     self.append(Wall((start[0] + x, start[1], start[2]), (start[0] + x + 40, start[1] + 6 * 24, start[2]), connections=Connections(right=connections.right)))
 
-def relative_pos(pos, facing):
-  ret = [0,0,0]
-
-  ret[facing.x] = 20 + pos[0]
-  ret[facing.y] = pos[1]
-  ret[facing.z] = 10 + pos[2]
-
-  return ret
-
 class Wall(ElementGroup):
   def __init__(self, pos, pos_b, facing = Facing.FRONT, connections=Connections()):
     ElementGroup.__init__(self, pos, facing, pos_b=pos_b, connections=connections)
