@@ -52,10 +52,9 @@ class WindowWall(ElementGroup):
             self.append(Element((start[0] + x + 40, start[1] + 4, start[2] + 10), facing,part=GLASS_1X4X6, color=TRANS_CLEAR))
         else:
           self.append(Wall((start[0] + x, start[1] + 4 * 24, start[2]), (start[0] + x + 80, start[1] + 6 * 24, start[2])))
-          self.append(Element((start[0] + x + 20, start[1], start[2] + 10), facing,part=WINDOW_1X2X2, color=TAN))
-          self.append(Element((start[0] + x + 20 + 40, start[1], start[2] + 10), facing,part=WINDOW_1X2X2, color=TAN))
-          self.append(Element((start[0] + x + 20, start[1] + 48, start[2] + 10), facing,part=WINDOW_1X2X2, color=TAN))
-          self.append(Element((start[0] + x + 20 + 40, start[1] + 48, start[2] + 10), facing,part=WINDOW_1X2X2, color=TAN))
+          for wx in [start[0] + x + 20, start[0] + x + 60]:
+            for wy in [start[1], start[1] + 48]:
+              self.append(Element((wx, wy, start[2] + 10), facing,part=WINDOW_1X2X2, color=TAN))
         x += 80
       else:
         last_solid = True
