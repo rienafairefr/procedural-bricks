@@ -20,14 +20,21 @@ class Element:
   def to_ldr(self):
     if self.facing == Facing.FRONT:
       orientation = "1 0 0 0 1 0 0 0 1"
-    if self.facing == Facing.BACK:
+    elif self.facing == Facing.BACK:
       orientation = "-1 0 0 0 1 0 0 0 -1"
-    if self.facing == Facing.LEFT:
+    elif self.facing == Facing.LEFT:
       orientation = "0 0 1 0 1 0 -1 0 0"
-    if self.facing == Facing.RIGHT:
+    elif self.facing == Facing.RIGHT:
       orientation = "0 0 -1 0 1 0 1 0 0"
+    else:
+      pass
 
     return("1 %d %d %d %d %s %s.dat" % (self.color.value, self.pos[0], self.pos[1], self.pos[2], orientation, self.part))
+
+  def collides_with(self, other):
+    part1 = p.part(code=self.part)
+    part2 = p.part(code=other.part)
+    pass
 
 class ElementGroup:
   def __init__(self, pos, facing, pos_b=None, connections=Connections()):
@@ -53,3 +60,9 @@ class ElementGroup:
 
   def to_ldr(self):
     return('\n'.join([c.to_ldr() for c in self.children]))
+
+  def collides_with(self, element):
+    for child in self.children:
+      if child.collides_with(element):
+        return True
+    return False

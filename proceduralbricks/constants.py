@@ -1,4 +1,31 @@
+import os
+
+import yaml
 from enum import Enum
+from ldraw.parts import Parts
+from appdirs import user_config_dir
+
+config_dir = user_config_dir('procedural-bricks')
+config_path = os.path.join(config_dir, 'config.yml')
+try:
+  with open(config_path, 'r') as config_file:
+    config = yaml.load(config_file)
+except:
+  if not os.path.exists(config_dir):
+    os.makedirs(config_dir)
+  if not os.path.exists(config_path):
+    with open(config_path, 'w') as config_file:
+      yaml.dump({'LDRAW_PARTS_PATH':None}, config_file)
+  print('The config file %s is inexistent or empty' % config_path)
+  exit(-1)
+
+if config is None or config.get('LDRAW_PARTS_PATH') is None:
+  print('The config file %s is invalid' % config_path)
+  exit(-1)
+
+
+p = Parts(config['LDRAW_PARTS_PATH'])
+
 
 # Connections
 BRICK_EVEN = 1
@@ -16,25 +43,14 @@ class Facing(Enum):
     self.flip = flip
 
 # Parts
-BRICK_1X1 = '3005'
-BRICK_1X2 = '3004'
-BRICK_2x2 = '3003'
-BRICK_2x3 = '3002'
-BRICK_2x4 = '3001'
-BRICK_1X3 = '3622'
-BRICK_1X4 = '3010'
-CHEESE_SLOPE = '54200'
-SLOPE_1x2x2_3 = '85984'
-SLOPE_2x1 = '3040'
-SLOPE_2x2 = '3039'
-SLOPE_2x3 = '3038'
-SLOPE_2x1x2 = '60481'
-SLOPE_2x2x2 = '3678'
-SLOPE_2x1x3 = '4460'
-SLOPE_2x2x3 = '98560'
-SLOPE_2x1_inv = '3665'
-SLOPE_2x2_inv = '3660'
-SLOPE_2x1x3_inv = '2449'
+BRICK_1X1 = p.parts['Brick  1 x  1']
+BRICK_1X2 = p.parts['Brick  1 x  2']
+BRICK_2x2 = p.parts['Brick  2 x  2']
+BRICK_2x3 = p.parts['Brick  2 x  3']
+BRICK_2x4 = p.parts['Brick  2 x  4']
+BRICK_1X3 = p.parts['Brick  1 x  3']
+BRICK_1X4 = p.parts['Brick  1 x  4']
+
 BRICK_1X2_MASONRY = '98283'
 WINDOW_1X2X2 = '60592C01'
 WINDOW_1X2X3 = '60593C01'
