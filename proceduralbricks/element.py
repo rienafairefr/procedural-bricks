@@ -27,7 +27,7 @@ class Element:
     if self.facing == Facing.RIGHT:
       orientation = "0 0 -1 0 1 0 1 0 0"
 
-    return("1 %d %d %d %d %s %s.dat" % (self.color, self.pos[0], self.pos[1], self.pos[2], orientation, self.part))
+    return("1 %d %d %d %d %s %s.dat" % (self.color.value, self.pos[0], self.pos[1], self.pos[2], orientation, self.part))
 
 class ElementGroup:
   def __init__(self, pos, facing, pos_b=None, connections=Connections()):
