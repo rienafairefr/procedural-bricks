@@ -14,7 +14,7 @@ class Wall(ElementGroup):
     for x in range(pos[0],pos_b[0],20*2):
       for y in range(pos[1],pos_b[1],24):
         offset = 20
-        part = BRICK_1X2
+        part = Brick1X2
 
         if connections.left and (y / 24) % 2 == int(connections.left != BRICK_EVEN):
           offset = 40
@@ -23,13 +23,13 @@ class Wall(ElementGroup):
               continue
             else:
               offset = 30
-              part = BRICK_1X1
+              part = Brick1X1
 
         last_one = (abs(pos_b[0] - pos[0]) == 40)
   
         if last_one and connections.right and (y / 24) % 2 == int(connections.right != BRICK_EVEN):
           offset = 10
-          part = BRICK_1X1 
+          part = Brick1X1
 
         self.append(Element((x + offset,y,10 + pos[2]), facing, part=part, color=Colors.sandblue))
 
@@ -46,16 +46,16 @@ class WindowWall(ElementGroup):
         last_solid = False
         if random() > .5:
           # Door
-          self.append(Element((start[0] + x + 40, start[1], start[2] + 10), facing, part=DOOR_1X4X6_FRAME, color = Colors.tan))
+          self.append(Element((start[0] + x + 40, start[1], start[2] + 10), facing, part=Door1X4X6Frame, color = Colors.tan))
           if random() > .5:
-            self.append(Element((start[0] + x + 20 - 12, start[1], start[2] + 10), facing, part=DOOR_1X4X6_4_PANE, color=Colors.black))
+            self.append(Element((start[0] + x + 20 - 12, start[1], start[2] + 10), facing, part=Door1X4X6With4Panes, color=Colors.black))
           else:
-            self.append(Element((start[0] + x + 40, start[1] + 4, start[2] + 10), facing,part=GLASS_1X4X6, color=Colors.clear))
+            self.append(Element((start[0] + x + 40, start[1] + 4, start[2] + 10), facing, part=Glass1X4X6, color=Colors.clear))
         else:
           self.append(Wall((start[0] + x, start[1] + 4 * 24, start[2]), (start[0] + x + 80, start[1] + 6 * 24, start[2])))
           for wx in [start[0] + x + 20, start[0] + x + 60]:
             for wy in [start[1], start[1] + 48]:
-              self.append(Element((wx, wy, start[2] + 10), facing,part=WINDOW_1X2X2, color=Colors.tan))
+              self.append(Element((wx, wy, start[2] + 10), facing, part=Window1X2X2, color=Colors.tan))
         x += 80
       else:
         last_solid = True

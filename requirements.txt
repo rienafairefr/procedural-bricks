@@ -1,3 +1,4 @@
 appdirs
-python-ldraw
+pyldraw
 PyYaml
+enum34
