@@ -1,3 +1,4 @@
 proceduralbricks/__pycache__
 *.ldr
 \.idea/
+*.pyc

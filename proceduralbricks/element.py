@@ -54,7 +54,7 @@ def get_points(part):
     for line in part.objects:
         if not isinstance(line, MetaCommand):
             for i in range(1, 5):
-                attr = 'p%i' % i
+                attr = 'point%i' % i
                 val = getattr(line, attr, None)
                 if val:
                     returnvalue.append(val)
