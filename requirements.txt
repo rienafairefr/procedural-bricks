@@ -2,3 +2,5 @@ appdirs
 pyldraw
 PyYaml
 enum34
+pypng
+Pillow

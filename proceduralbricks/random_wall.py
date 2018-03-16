@@ -3,7 +3,8 @@ import random
 import sys
 
 from constants import *
-from element import Element, ElementGroup, Connections, get_points, parts as ldrawparts, get_bounding_box
+from element import Element, ElementGroup, Connections, get_points, parts as ldrawparts, get_bounding_box, get_width, \
+    get_depth, get_height, ldux, ldu, get_z_offset
 
 WallColors = list(AllColors)
 WallColors.remove(Colors.Red)
@@ -40,54 +41,17 @@ accepted_on = {
 }
 
 
-def get_width(code):
-    bb = get_bounding_box(get_points(ldrawparts.part(code=code)))
-    return int((bb.max - bb.min).x)
-
-
-def get_depth(code):
-    bb = get_bounding_box(get_points(ldrawparts.part(code=code)))
-    return int((bb.max - bb.min).z)
-
-
-def get_height(code):
-    bb = get_bounding_box(get_points(ldrawparts.part(code=code)))
-    return int((bb.max - bb.min).y)
-
-
-def get_z_offset(code):
-    bb = get_bounding_box(get_points(ldrawparts.part(code=code)))
-    return int(bb.max.z)
-
-
-widths = {code: get_width(code) / 20 for code in parts}
-depths = {code: get_depth(code) / 20.0 for code in parts}
-heights = {code: (get_height(code) - 4) / 24 for code in parts}
-z_offsets = {code: get_z_offset(code) / 20.0 for code in parts}
+widths = {code: get_width(code)  for code in parts}
+depths = {code: get_depth(code) for code in parts}
+heights = {code: get_height(code) - 4 / 24 for code in parts}
+z_offsets = {code: get_z_offset(code) for code in parts}
 
 n_x = 10
 n_y = 10
 
-
-
-
-def ldux(stud):
-    return stud * 20
-
-
-def lduy(brickheight):
-    return - brickheight * 24
-
-
-lduz = ldux
-
 seed = random.randrange(sys.maxsize)
 rng = random.Random(seed)
 print("Seed was:", seed)
-
-
-def ldu(pos):
-    return ldux(pos[0]), lduy(pos[1]), lduz(pos[2])
 
 
 class RandomWall(ElementGroup):
@@ -107,7 +71,7 @@ class RandomWall(ElementGroup):
                 break
 
             def try_place(x, part):
-
+                print(x)
                 y = self.current_height[x]
                 current_top_part = self.top_part.get(x)
                 print((x, y))

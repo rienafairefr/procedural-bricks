@@ -66,6 +66,59 @@ def get_points(part):
     return returnvalue
 
 
+def get_width_ldu(code):
+    bb = get_bounding_box(get_points(parts.part(code=code)))
+    return int((bb.max - bb.min).x)
+
+
+def get_depth_ldu(code):
+    bb = get_bounding_box(get_points(parts.part(code=code)))
+    return int((bb.max - bb.min).z)
+
+
+def get_height_ldu(code):
+    bb = get_bounding_box(get_points(parts.part(code=code)))
+    return int((bb.max - bb.min).y)
+
+
+def get_z_offset_ldu(code):
+    bb = get_bounding_box(get_points(parts.part(code=code)))
+    return int(bb.max.z)
+
+
+def get_z_offset(code):
+    return get_z_offset_ldu(code) / 24
+
+
+def get_width(code):
+    return get_width_ldu(code) / 20
+
+
+def get_depth(code):
+    return get_depth_ldu(code) / 20
+
+
+def get_height(code):
+    return get_height_ldu(code) / 24
+
+
+def ldux(stud):
+    return stud * 20
+
+
+def lduy(brickheight):
+    return - brickheight * 24
+
+
+lduz = ldux
+
+
+def ldu(pos):
+    return ldux(pos[0]), lduy(pos[1]), lduz(pos[2])
+
+
+
+
 class Element:
     def __init__(self, pos, facing=Facing.FRONT, part=Brick1X2, color=Colors.Black, pos_b=None,
                  connections=Connections()):
