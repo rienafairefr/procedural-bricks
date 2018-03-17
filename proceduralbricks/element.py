@@ -61,7 +61,7 @@ def get_points(part):
         if isinstance(line, Piece):
             subpart = parts.part(code=line.part)
             subpoints = get_points(subpart)
-            subpoints = [line.matrix*p+line.position for p in subpoints]
+            subpoints = [line.matrix * p + line.position for p in subpoints]
             returnvalue.extend(subpoints)
     return returnvalue
 
@@ -115,8 +115,6 @@ lduz = ldux
 
 def ldu(pos):
     return ldux(pos[0]), lduy(pos[1]), lduz(pos[2])
-
-
 
 
 class Element:
