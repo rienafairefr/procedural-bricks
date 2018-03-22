@@ -31,3 +31,6 @@ Door1X4X6With4Panes = Door1X4X6With4PanesAndStudHandle
 
 AllColors = list(ColoursByCode.values())
 Colors = colours
+
+stud = 20
+brick_height = 24

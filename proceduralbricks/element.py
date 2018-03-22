@@ -4,7 +4,7 @@ from ldraw.parts import Parts
 from ldraw.config import get_config
 from ldraw.pieces import Piece
 
-from constants import *
+from proceduralbricks.constants import Facing, Brick1X2, Colors, stud, brick_height
 
 config = get_config()
 
@@ -87,27 +87,27 @@ def get_z_offset_ldu(code):
 
 
 def get_z_offset(code):
-    return get_z_offset_ldu(code) / 24
+    return get_z_offset_ldu(code) / brick_height
 
 
 def get_width(code):
-    return get_width_ldu(code) / 20
+    return get_width_ldu(code) / stud
 
 
 def get_depth(code):
-    return get_depth_ldu(code) / 20
+    return get_depth_ldu(code) / stud
 
 
 def get_height(code):
-    return get_height_ldu(code) / 24
+    return get_height_ldu(code) / brick_height
 
 
-def ldux(stud):
-    return stud * 20
+def ldux(st):
+    return st * stud
 
 
 def lduy(brickheight):
-    return - brickheight * 24
+    return - brickheight * brick_height
 
 
 lduz = ldux
@@ -117,7 +117,7 @@ def ldu(pos):
     return ldux(pos[0]), lduy(pos[1]), lduz(pos[2])
 
 
-class Element:
+class Element(object):
     def __init__(self, pos, facing=Facing.FRONT, part=Brick1X2, color=Colors.Black, pos_b=None,
                  connections=Connections()):
         self.pos = pos

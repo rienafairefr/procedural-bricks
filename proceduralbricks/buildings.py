@@ -1,37 +1,11 @@
 from random import random
 
-from constants import *
-from element import Element, ElementGroup, Connections
+from ldraw.library.parts.others import Door1X4X6Frame
 
-
-class Wall(ElementGroup):
-    def __init__(self, pos, pos_b, facing=Facing.FRONT, connections=Connections()):
-        ElementGroup.__init__(self, pos, facing, pos_b=pos_b, connections=connections)
-
-        pos = self.relative_pos(pos)
-        pos_b = self.relative_pos(pos_b)
-
-        for x in range(pos[0], pos_b[0], 20 * 2):
-            for y in range(pos[1], pos_b[1], 24):
-                offset = 20
-                part = Brick1X2
-
-                if connections.left and (y / 24) % 2 == int(connections.left != BRICK_EVEN):
-                    offset = 40
-                    if x == pos_b[0] - 40:
-                        if connections.right:
-                            continue
-                        else:
-                            offset = 30
-                            part = Brick1X1
-
-                last_one = (abs(pos_b[0] - pos[0]) == 40)
-
-                if last_one and connections.right and (y / 24) % 2 == int(connections.right != BRICK_EVEN):
-                    offset = 10
-                    part = Brick1X1
-
-                self.append(Element((x + offset, y, 10 + pos[2]), facing, part=part, color=Colors.Sand_Blue))
+from proceduralbricks.constants import Facing, BRICK_EVEN, BRICK_ODD, Window1X2X2, Colors, Door1X4X6With4Panes, \
+    Glass1X4X6, brick_height, stud
+from proceduralbricks.element import Element, ElementGroup, Connections
+from proceduralbricks.walls import Wall
 
 
 class WindowWall(ElementGroup):
@@ -39,7 +13,7 @@ class WindowWall(ElementGroup):
         ElementGroup.__init__(self, start, facing, connections=connections)
 
         self.append(cls_wall((start[0], start[1], start[2]), (start[0] + 40, start[1] + 6 * 24, start[2]),
-                         connections=Connections(left=connections.left)))
+                             connections=Connections(left=connections.left)))
 
         last_solid = True
         x = 40
@@ -59,7 +33,7 @@ class WindowWall(ElementGroup):
                                             color=Colors.Trans_Clear))
                 else:
                     self.append(cls_wall((start[0] + x, start[1] + 4 * 24, start[2]),
-                                     (start[0] + x + 80, start[1] + 6 * 24, start[2])))
+                                         (start[0] + x + 80, start[1] + 6 * 24, start[2])))
                     for wx in [start[0] + x + 20, start[0] + x + 60]:
                         for wy in [start[1], start[1] + 48]:
                             self.append(Element((wx, wy, start[2] + 10), facing, part=Window1X2X2, color=Colors.Tan))
@@ -70,7 +44,7 @@ class WindowWall(ElementGroup):
                 x += 40
 
         self.append(cls_wall((start[0] + x, start[1], start[2]), (start[0] + x + 40, start[1] + 6 * 24, start[2]),
-                         connections=Connections(right=connections.right)))
+                             connections=Connections(right=connections.right)))
 
 
 class WallBox(ElementGroup):
@@ -93,14 +67,18 @@ class WallBox(ElementGroup):
 
 
 class ModularBuilding(ElementGroup):
-    def __init__(self, cls_Wall=Wall):
+    def __init__(self, cls_Wall=Wall, width=31, height=64, depth=8):
         ElementGroup.__init__(self, (0, 0, 0), Facing.FRONT)
 
-        for y in range(0, 8 * 8 * 24, 8 * 24):
-            self.append(WallBox((0, y, 0), (31 * 40, y + 24 * 8, 20 * 16), front=False, cls_wall=cls_Wall))
+        for y in range(0, height * brick_height, 8 * brick_height):
+            self.append(WallBox((0, y, 0), (width * 2 * stud, y + brick_height * 8, stud * 2 * depth),
+                                front=False,
+                                cls_wall=cls_Wall))
 
             self.append(
-                cls_Wall((0, y, 0), (31 * 40, y + 24 * 2, 0),
-                         connections=Connections(left=BRICK_EVEN, right=BRICK_EVEN)))
-            self.append(WindowWall((0, y + 24 * 2, 0), 31, cls_wall=cls_Wall,
+                cls_Wall((0, y, 0), (width * 2 * stud, y + brick_height * 2, 0),
+                         connections=Connections(left=BRICK_EVEN,
+                                                 right=BRICK_EVEN)))
+            self.append(WindowWall((0, y + 24 * 2, 0), width,
+                                   cls_wall=cls_Wall,
                                    connections=Connections(left=BRICK_EVEN, right=BRICK_EVEN)))

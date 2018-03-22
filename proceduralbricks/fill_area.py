@@ -1,8 +1,8 @@
 import random
 import sys
 
-from constants import Brick1X1, Brick1X2, Brick1X4, Brick2X2, Brick1X3, Facing, Colors, AllColors
-from element import ElementGroup, Connections, ldu, get_width, get_depth, get_height, Element, get_z_offset, lduy
+from proceduralbricks.constants import Brick1X1, Brick1X2, Brick1X4, Brick2X2, Brick1X3, Facing, Colors, AllColors
+from proceduralbricks.element import ElementGroup, Connections, ldu, get_width, get_depth, get_height, Element, get_z_offset, lduy
 
 parts = [
     Brick1X1, Brick1X2, Brick1X3, Brick1X4,

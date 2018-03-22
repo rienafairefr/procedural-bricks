@@ -1,10 +1,16 @@
 import random
-
 import sys
 
-from constants import *
-from element import Element, ElementGroup, Connections, get_points, parts as ldrawparts, get_bounding_box, get_width, \
-    get_depth, get_height, ldux, ldu, get_z_offset
+from proceduralbricks.constants import (Colors, AllColors, Brick1X1, Brick1X2, Brick1X3, Brick1X4,
+                                        Brick2X2,
+                                        Brick1X1X3,
+                                        SlopeBrick752X2X3WithHollowStuds,
+
+                                        SlopeBrick452X2Inverted,
+                                        SlopeBrick452X2, Facing)
+from proceduralbricks.element import Element, ElementGroup, Connections, parts as ldrawparts, \
+    get_width, \
+    get_depth, get_height, ldu, get_z_offset
 
 WallColors = list(AllColors)
 WallColors.remove(Colors.Red)
@@ -40,8 +46,7 @@ accepted_on = {
     SlopeBrick452X2Inverted: [Brick1X2, Brick1X3, Brick1X4]
 }
 
-
-widths = {code: get_width(code)  for code in parts}
+widths = {code: get_width(code) for code in parts}
 depths = {code: get_depth(code) for code in parts}
 heights = {code: get_height(code) - 4 / 24 for code in parts}
 z_offsets = {code: get_z_offset(code) for code in parts}
@@ -84,7 +89,7 @@ class RandomWall(ElementGroup):
                     if x >= n_x:
                         return 0
                     else:
-                        return x+1
+                        return x + 1
                 for xi in range(x, min(n_x, x + width), 1):
                     if self.current_height[xi] < y:
                         print('overhang')
